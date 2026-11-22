@@ -75,3 +75,4 @@ Then open the site and try the **Ping API** button and the contact form.
 - Contact messages are stored in an embedded in-memory H2 database and written to the application log. They do not survive a redeploy. To keep them permanently, add a managed Postgres database and set `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, and `SPRING_DATASOURCE_PASSWORD` in Render's environment (plus the PostgreSQL driver in `pom.xml`).
 - To change region or plan, edit `render.yaml`, commit, and push — Render redeploys automatically.
 - `.github/workflows/ci.yml` builds and tests the backend on every push to `main`.
+- If a build fails with Maven Central `HTTP 429 / Too Many Requests`, that is Render's shared build IP being rate limited. `settings.xml` already redirects Maven to Google's read-through mirror and the Dockerfile uses it, so a fresh push should resolve it. Redeploy from the Render dashboard after pushing.

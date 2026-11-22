@@ -2,11 +2,14 @@
 FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-COPY pom.xml .
-RUN mvn -B -q dependency:go-offline
-
+# settings.xml mirrors Maven Central to avoid 429 rate limits on shared build IPs.
+COPY pom.xml settings.xml ./
 COPY src ./src
-RUN mvn -B -q clean package -DskipTests
+
+RUN mvn -B -s settings.xml \
+      -Dmaven.wagon.http.retryHandler.count=5 \
+      -Dmaven.wagon.http.retryHandler.interval=5000 \
+      -DskipTests clean package
 
 # ---- Runtime stage ----
 FROM eclipse-temurin:17-jre-alpine

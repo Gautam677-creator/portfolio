@@ -91,6 +91,7 @@ The `healthCheckPath` is `/actuator/health`. The blueprint uses the free plan in
 ├── docker-compose.yml
 ├── render.yaml
 ├── pom.xml
+├── settings.xml            # Maven mirror (avoids Central 429 on shared build IPs)
 ├── .github/workflows/ci.yml
 └── src/main
     ├── java/com/gautamsingh/portfolio
