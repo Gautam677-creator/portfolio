@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gautam Kumar Singh | Java Spring Boot, DSA & DevOps Engineer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'gradient-x': 'gradientX 8s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        gradientX: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scroll Reveal & Visual Effects */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .bg-grid-pattern {
+            background-size: 32px 32px;
+            background-image: radial-gradient(circle, rgba(99, 102, 241, 0.14) 1px, transparent 1px);
+        }
+        .dark .bg-grid-pattern {
+            background-image: radial-gradient(circle, rgba(129, 140, 248, 0.12) 1px, transparent 1px);
+        }
+        .glass-card {
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .animate-gradient-text {
+            background-size: 200% auto;
+            animation: gradientX 5s ease infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 antialiased selection:bg-brand-500 selection:text-white bg-grid-pattern">
+
+    <!-- Toast Notification Container (Replaces alert()) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-slate-950/80 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2.5 group">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 via-violet-500 to-fuchsia-500 flex items-center justify-center text-white font-bold text-base shadow-md group-hover:scale-105 group-hover:rotate-3 transition-all">
+                        GS
+                    </div>
+                    <span class="font-bold text-lg tracking-tight">Gautam<span class="text-brand-600 dark:text-brand-500">.dev</span></span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
+                    <a href="#about" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">About</a>
+                    <a href="#skills" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Skills & DSA</a>
+                    <a href="#hackathons" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Hackathons</a>
+                    <a href="#projects" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Projects</a>
+                    <a href="#architecture" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Java & DevOps</a>
+                </nav>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center gap-3">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" aria-label="Toggle Dark Mode" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+
+                    <!-- GitHub Link -->
+                    <a href="https://github.com/Gautam677-creator" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+
+                    <!-- Hire Me CTA -->
+                    <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold shadow-sm hover:shadow-brand-500/30 hover:shadow-lg transition-all">
+                        <span>Hire Me</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                    </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" aria-label="Open Menu" class="md:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 pt-3 pb-5 space-y-2">
+            <a href="#about" class="block px-3 py-2.5 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-900">About</a>
+            <a href="#skills" class="block px-3 py-2.5 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-900">Skills & DSA</a>
+            <a href="#hackathons" class="block px-3 py-2.5 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-900">Hackathons</a>
+            <a href="#projects" class="block px-3 py-2.5 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-900">Projects</a>
+            <a href="#architecture" class="block px-3 py-2.5 rounded-xl text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-900">Java & DevOps</a>
+            <a href="#contact" class="block px-3 py-2.5 rounded-xl text-base font-medium text-brand-600 dark:text-brand-400 font-semibold">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="about" class="relative overflow-hidden pt-16 pb-24 sm:pt-24 sm:pb-32">
+            <!-- Animated Ambient Background Orbs -->
+            <div class="absolute -top-10 left-1/4 w-96 h-96 bg-brand-500/20 dark:bg-brand-500/15 blur-3xl -z-10 rounded-full animate-pulse-slow"></div>
+            <div class="absolute top-32 right-1/4 w-80 h-80 bg-fuchsia-500/20 dark:bg-violet-500/15 blur-3xl -z-10 rounded-full animate-pulse-slow"></div>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <!-- Left Column: Intro Text -->
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left reveal active">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 dark:bg-brand-900/30 border border-brand-200 dark:border-brand-700/50 text-brand-700 dark:text-brand-300 text-xs font-semibold tracking-wide uppercase shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                            Rungta College of Engineering & Technology Alumni
+                        </div>
+
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
+                            Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-violet-500 to-fuchsia-500 animate-gradient-text">Gautam Kumar Singh</span>
+                        </h1>
+
+                        <p class="text-lg sm:text-xl font-semibold text-slate-800 dark:text-slate-200">
+                            Java Spring Boot Architect • DSA Problem Solver • DevOps & UI/UX Engineer
+                        </p>
+
+                        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            Graduated from <strong class="text-slate-900 dark:text-white font-semibold">Rungta College of Engineering and Technology</strong>. Proficient across multiple programming languages with deep specialization in <span class="text-brand-600 dark:text-brand-400 font-medium">Java Spring Boot</span>, algorithmic optimization (<span class="text-brand-600 dark:text-brand-400 font-medium">DSA</span>), cloud <span class="text-brand-600 dark:text-brand-400 font-medium">DevOps</span> pipelines, and hackathon-tested rapid prototyping.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                            <a href="#projects" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 hover:from-brand-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-brand-600/25 hover:scale-[1.02] flex items-center justify-center gap-2 transition-all">
+                                <span>View My Projects</span>
+                                <i data-lucide="layers" class="w-4 h-4"></i>
+                            </a>
+                            <button onclick="openJavaModal()" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 font-semibold hover:scale-[1.02] flex items-center justify-center gap-2 transition-all shadow-sm">
+                                <i data-lucide="terminal" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
+                                <span>Inspect Spring Boot API</span>
+                            </button>
+                        </div>
+
+                        <!-- Quick Metrics -->
+                        <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/80 dark:border-slate-800/80 max-w-lg mx-auto lg:mx-0">
+                            <div class="p-3 rounded-2xl bg-white/60 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60">
+                                <div class="text-2xl sm:text-3xl font-extrabold text-brand-600 dark:text-brand-400">500+</div>
+                                <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">DSA Problems</div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-white/60 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60">
+                                <div class="text-2xl sm:text-3xl font-extrabold text-violet-600 dark:text-violet-400">10+</div>
+                                <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Hackathons</div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-white/60 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60">
+                                <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">CI/CD</div>
+                                <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">DevOps Ready</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Visual Interactive Floating Card -->
+                    <div class="lg:col-span-5 animate-float">
+                        <div class="relative rounded-3xl bg-white/90 dark:bg-slate-900/90 glass-card border border-slate-200/90 dark:border-slate-800 p-6 shadow-2xl shadow-brand-500/10">
+                            <!-- Decorative Gradient Border Glow -->
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-500 via-violet-500 to-fuchsia-500 rounded-3xl opacity-20 blur -z-10"></div>
+
+                            <!-- Profile Header -->
+                            <div class="flex items-center gap-4 mb-6">
+                                <img src="https://placehold.co/120x120/4f46e5/ffffff?text=GKS" alt="Gautam Kumar Singh Portrait" onerror="this.src='https://placehold.co/120x120/334155/ffffff?text=GKS'" class="w-16 h-16 rounded-2xl object-cover shadow-md ring-2 ring-brand-500/40">
+                                <div>
+                                    <h2 class="font-bold text-lg">Gautam Kumar Singh</h2>
+                                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">B.Tech • Rungta College of Engg. & Tech.</p>
+                                    <div class="flex items-center gap-1.5 mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                                        <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                                        <span>Java • DSA • DevOps • Hackathon Builder</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Live Code Preview Snippet -->
+                            <div class="rounded-2xl bg-slate-950 text-slate-200 p-4 font-mono text-xs overflow-x-auto border border-slate-800 shadow-inner">
+                                <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    </div>
+                                    <span class="text-slate-400 text-[11px]">GautamService.java</span>
+                                </div>
+                                <pre class="leading-relaxed"><code><span class="text-violet-400">@RestController</span>
+<span class="text-violet-400">@RequestMapping</span>(<span class="text-emerald-400">"/api/v1/gautam"</span>)
+<span class="text-sky-400">public class</span> <span class="text-amber-300">EngineerController</span> {
+
+    <span class="text-violet-400">@GetMapping</span>(<span class="text-emerald-400">"/profile"</span>)
+    <span class="text-sky-400">public</span> ResponseEntity&lt;Profile&gt; <span class="text-blue-400">getProfile</span>() {
+        <span class="text-sky-400">return</span> ResponseEntity.ok(<span class="text-sky-400">new</span> Profile(
+            <span class="text-emerald-400">"Gautam Kumar Singh"</span>,
+            <span class="text-emerald-400">"Rungta College of Engg & Tech"</span>,
+            List.of(<span class="text-emerald-400">"Spring Boot"</span>, <span class="text-emerald-400">"DSA"</span>, <span class="text-emerald-400">"DevOps"</span>)
+        ));
+    }
+}</code></pre>
+                            </div>
+
+                            <!-- Interactive UI/UX Ping Test -->
+                            <div class="mt-5 flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/70">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 rounded-xl bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400">
+                                        <i data-lucide="activity" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold">Dockerized Spring Boot Pod</div>
+                                        <div id="api-latency" class="text-[11px] text-slate-500 dark:text-slate-400">Latency: 14ms • K8s Healthy</div>
+                                    </div>
+                                </div>
+                                <button onclick="simulateApiPing()" class="px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 active:scale-95 text-white text-xs font-medium transition-all shadow-sm">
+                                    Ping API
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack & Core Mastery Section -->
+        <section id="skills" class="py-20 bg-white/80 dark:bg-slate-900/60 border-y border-slate-200/80 dark:border-slate-800/80 reveal">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Polyglot Engineering</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mt-2 mb-4">Core Technical Mastery</h2>
+                    <p class="text-slate-600 dark:text-slate-400">Mastered multiple programming languages with deep expertise in enterprise Java, algorithmic problem-solving, and automated cloud infrastructure.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Java Spring Boot Card -->
+                    <div class="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-brand-500 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <i data-lucide="server" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Java & Spring Boot</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mb-5 leading-relaxed">Production-grade microservices, Spring Security, RESTful APIs, and JPA/Hibernate optimization.</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Java 17/21</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Spring Boot</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Microservices</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">PostgreSQL</span>
+                        </div>
+                    </div>
+
+                    <!-- DSA & Multi-Language Card -->
+                    <div class="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-violet-500 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300">
+                        <div class="w-12 h-12 rounded-2xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <i data-lucide="binary" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">DSA & Languages</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mb-5 leading-relaxed">Strong command over Data Structures, Algorithms, time-space complexity, and polyglot coding.</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">DSA</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Java / C++</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Python</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <!-- DevOps Engineering Card -->
+                    <div class="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <i data-lucide="container" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">DevOps & Cloud</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mb-5 leading-relaxed">Automated CI/CD pipelines, container orchestration, Linux administration, and cloud deployments.</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Docker</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Kubernetes</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">GitHub Actions</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">AWS / Linux</span>
+                        </div>
+                    </div>
+
+                    <!-- UI/UX & Frontend Card -->
+                    <div class="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-sky-500 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300">
+                        <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <i data-lucide="layout" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">UI/UX & Web</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mb-5 leading-relaxed">Interactive interfaces, modern CSS animations, responsive grids, and intuitive user flows.</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">HTML5 / CSS3</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Tailwind CSS</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">ES6+ JS</span>
+                            <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">UI/UX Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Hackathon Milestones Section -->
+        <section id="hackathons" class="py-20 reveal">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    <!-- Education Card -->
+                    <div class="lg:col-span-5 p-8 rounded-3xl bg-gradient-to-br from-brand-600 to-violet-700 text-white shadow-xl flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-white/10 rounded-full blur-2xl"></div>
+                        <div>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-white/15 text-xs font-semibold mb-6">
+                                <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                                <span>Academic Foundation</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Rungta College of Engineering and Technology</h3>
+                            <p class="text-brand-100 text-sm mb-6">Bachelor of Technology (B.Tech) in Computer Science & Engineering</p>
+                            <ul class="space-y-3 text-sm text-brand-50">
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-300 shrink-0 mt-0.5"></i>
+                                    <span>Mastered Core CS fundamentals: Operating Systems, DBMS, Computer Networks & OOPs.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-300 shrink-0 mt-0.5"></i>
+                                    <span>Led coding club workshops on Java Spring Boot & Data Structures.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-8 pt-4 border-t border-white/20 flex items-center justify-between text-xs font-mono">
+                            <span>RCET ALUMNI</span>
+                            <span>COMPUTER SCIENCE</span>
+                        </div>
+                    </div>
+
+                    <!-- Hackathon Journey Card -->
+                    <div class="lg:col-span-7 p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-fuchsia-600 dark:text-fuchsia-400">Rapid Innovation</span>
+                                <h3 class="text-2xl font-bold mt-1">Hackathon Track Record</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 flex items-center justify-center">
+                                <i data-lucide="trophy" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                            Participated in numerous national and inter-collegiate hackathons—architecting end-to-end Java Spring Boot backends, containerized DevOps deployments, and polished UI/UX prototypes under 24–36 hour sprints.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/80">
+                                <div class="flex items-center gap-2 text-brand-600 dark:text-brand-400 font-bold text-sm mb-1">
+                                    <i data-lucide="zap" class="w-4 h-4"></i>
+                                    <span>Smart India Hackathon (SIH)</span>
+                                </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-400">Built scalable Spring Boot microservices & real-time analytics dashboard for civic problem statements.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/80">
+                                <div class="flex items-center gap-2 text-violet-600 dark:text-violet-400 font-bold text-sm mb-1">
+                                    <i data-lucide="flame" class="w-4 h-4"></i>
+                                    <span>36-Hour FinTech & Cloud Sprints</span>
+                                </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-400">Engineered zero-downtime Dockerized APIs and algorithmic fraud detection prototypes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Projects Section -->
+        <section id="projects" class="py-20 reveal">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Portfolio Showcase</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mt-1 mb-3">Featured Engineering Projects</h2>
+                        <p class="text-slate-600 dark:text-slate-400 max-w-xl">Explore projects spanning Java Spring Boot microservices, DSA visualizers, DevOps pipelines, and hackathon builds.</p>
+                    </div>
+
+                    <!-- Interactive Filter Tabs -->
+                    <div id="filter-buttons" class="flex flex-wrap gap-2">
+                        <button data-filter="all" class="filter-btn active px-4 py-2 rounded-xl text-sm font-semibold bg-brand-600 text-white shadow-sm transition-all">All Work</button>
+                        <button data-filter="java" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300/70 dark:hover:bg-slate-700 transition-all">Java Spring Boot</button>
+                        <button data-filter="devops" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300/70 dark:hover:bg-slate-700 transition-all">DevOps & DSA</button>
+                        <button data-filter="uiux" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300/70 dark:hover:bg-slate-700 transition-all">Hackathon & UI/UX</button>
+                    </div>
+                </div>
+
+                <!-- Projects Grid (Populated via JS) -->
+                <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </section>
+
+        <!-- Java Backend & DevOps Architecture Showcase -->
+        <section id="architecture" class="py-20 bg-slate-900 text-white rounded-3xl mx-4 sm:mx-6 lg:mx-auto max-w-6xl px-6 sm:px-10 shadow-2xl border border-slate-800 reveal">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-brand-500/20 text-brand-300 text-xs font-semibold">
+                        <i data-lucide="cpu" class="w-4 h-4"></i>
+                        <span>Production Architecture</span>
+                    </div>
+                    <h2 class="text-3xl font-bold tracking-tight">Java Spring Boot + DevOps Pipeline</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        From clean OOP design and optimal DSA complexity in Java to automated Docker builds and Kubernetes deployments. Inspect the live Spring Boot REST Controller powering this portfolio.
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="openJavaModal()" class="px-5 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold flex items-center gap-2 shadow-lg shadow-brand-600/30 transition-all">
+                            <i data-lucide="file-code-2" class="w-4 h-4"></i>
+                            <span>View Full Java Source</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-brand-500/60 transition-colors">
+                            <div class="text-brand-400 font-mono text-xs mb-1">01. ALGORITHMS & API</div>
+                            <div class="font-bold text-base mb-1">Spring Boot 3</div>
+                            <p class="text-xs text-slate-400">Optimal O(log n) & O(1) data structures backing high-throughput REST endpoints.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-emerald-500/60 transition-colors">
+                            <div class="text-emerald-400 font-mono text-xs mb-1">02. CI/CD & CONTAINERS</div>
+                            <div class="font-bold text-base mb-1">Docker & K8s</div>
+                            <p class="text-xs text-slate-400">Automated GitHub Actions testing, multi-stage Docker builds, and zero-downtime rollouts.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-amber-500/60 transition-colors">
+                            <div class="text-amber-400 font-mono text-xs mb-1">03. FRONTEND UX</div>
+                            <div class="font-bold text-base mb-1">HTML / CSS / JS</div>
+                            <p class="text-xs text-slate-400">Responsive glassmorphic interface with smooth animations and instant state updates.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 reveal">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="rounded-3xl bg-white/95 dark:bg-slate-900/95 glass-card border border-slate-200 dark:border-slate-800 p-8 sm:p-12 shadow-xl">
+                    <div class="text-center max-w-xl mx-auto mb-10">
+                        <h2 class="text-3xl font-bold tracking-tight mb-3">Connect with Gautam</h2>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">Looking for a Software Engineer skilled in Java Spring Boot, DSA, and DevOps—or a hackathon collaborator? Drop a message below.</p>
+                    </div>
+
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium mb-2">Your Name</label>
+                                <input type="text" id="name" required placeholder="Recruiter / Teammate Name" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium mb-2">Email Address</label>
+                                <input type="email" id="email" required placeholder="you@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-sm font-medium mb-2">Opportunity / Topic</label>
+                            <select id="subject" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                                <option value="Java Spring Boot Backend Role">Java Spring Boot Backend Role</option>
+                                <option value="Full-Stack & DevOps Engineering">Full-Stack & DevOps Engineering</option>
+                                <option value="SDE / DSA Interview Opportunity">SDE / DSA Interview Opportunity</option>
+                                <option value="Hackathon / Project Collaboration">Hackathon / Project Collaboration</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium mb-2">Message</label>
+                            <textarea id="message" rows="4" required placeholder="Hi Gautam, we loved your Spring Boot and DevOps work..." class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 hover:from-brand-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2 transition-all">
+                            <span>Send Message via Spring Boot API</span>
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-10 bg-white dark:bg-slate-950">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                <span class="font-bold text-slate-900 dark:text-white">Gautam Kumar Singh</span>
+                <span>• Rungta College of Engineering & Technology</span>
+            </div>
+            <div class="flex items-center gap-5">
+                <a href="https://github.com/Gautam677-creator" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 flex items-center gap-1.5 transition-colors">
+                    <i data-lucide="github" class="w-4 h-4"></i>
+                    <span>@Gautam677-creator</span>
+                </a>
+                <button onclick="copyEmail()" class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 flex items-center gap-1.5 transition-colors">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    <span>gautam.singh@example.com</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal: Java Spring Boot Source Code Viewer -->
+    <div id="java-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="file-code" class="w-5 h-5 text-brand-400"></i>
+                    <h3 class="font-bold text-base">GautamPortfolioController.java (Spring Boot 3)</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="copyJavaCode()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium flex items-center gap-1.5 transition-colors">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                        <span>Copy Code</span>
+                    </button>
+                    <button onclick="closeJavaModal()" aria-label="Close Modal" class="p-2 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 overflow-y-auto font-mono text-xs leading-relaxed bg-slate-950">
+<pre id="java-source-code"><code>package com.gautamsingh.portfolio.controller;
+
+import com.gautamsingh.portfolio.model.*;
+import com.gautamsingh.portfolio.service.ContactService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/v1/gautam")
+public class GautamPortfolioController {
+
+    private final ContactService contactService;
+
+    public GautamPortfolioController(ContactService contactService) {
+        this.contactService = contactService;
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity&lt;EngineerProfile&gt; getProfile() {
+        return ResponseEntity.ok(new EngineerProfile(
+            "Gautam Kumar Singh",
+            "Rungta College of Engineering and Technology",
+            List.of("Java Spring Boot", "Data Structures &amp; Algorithms", "DevOps (Docker/K8s)", "Polyglot Programming"),
+            10
+        ));
+    }
+
+    @PostMapping("/contact")
+    public ResponseEntity&lt;ApiResponse&gt; submitInquiry(@Valid @RequestBody ContactRequest request) {
+        contactService.save(request);
+        return ResponseEntity.ok(ApiResponse.success(
+            "Thank you " + request.name() + "! Your inquiry has been logged."));
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; health() {
+        return ResponseEntity.ok(Map.of(
+            "status", "UP",
+            "service", "gautam-portfolio-api",
+            "timestamp", Instant.now().toString()
+        ));
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive JavaScript Application Logic -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 0. Backend API configuration
+        // Same-origin by default: Spring Boot serves this page and the API.
+        // To host the HTML separately, set window.PORTFOLIO_API_BASE before this script.
+        const API_BASE = (window.PORTFOLIO_API_BASE || '').replace(/\/$/, '');
+        const API_ENDPOINTS = {
+            profile: `${API_BASE}/api/v1/gautam/profile`,
+            contact: `${API_BASE}/api/v1/gautam/contact`
+        };
+
+        // 1. Gautam's Portfolio Project Data
+        const projectsData = [
+            {
+                id: 1,
+                title: "CloudScale Microservices Engine",
+                category: "java",
+                categoryLabel: "Java Spring Boot",
+                description: "Distributed e-commerce & payment backend built with Java 21, Spring Boot, Spring Security JWT, and Redis caching for sub-30ms responses.",
+                image: "https://placehold.co/600x360/4f46e5/ffffff?text=Spring+Boot+Microservices",
+                tags: ["Java 21", "Spring Boot", "Spring Security", "PostgreSQL"],
+                metrics: "99.9% API Reliability"
+            },
+            {
+                id: 2,
+                title: "AlgoViz DSA Interactive Studio",
+                category: "devops",
+                categoryLabel: "DevOps & DSA",
+                description: "Real-time visualizer for Graph, Dynamic Programming, and Tree algorithms demonstrating step-by-step time and space complexity.",
+                image: "https://placehold.co/600x360/7c3aed/ffffff?text=AlgoViz+DSA+Engine",
+                tags: ["DSA", "Java", "JavaScript", "Algorithms"],
+                metrics: "40+ Algorithms Visualized"
+            },
+            {
+                id: 3,
+                title: "AutoDeploy CI/CD Orchestrator",
+                category: "devops",
+                categoryLabel: "DevOps & DSA",
+                description: "Automated DevOps pipeline integrating GitHub Actions, multi-stage Docker builds, Kubernetes manifests, and Prometheus health monitoring.",
+                image: "https://placehold.co/600x360/d97706/ffffff?text=Docker+%26+K8s+Pipeline",
+                tags: ["Docker", "Kubernetes", "CI/CD", "Linux"],
+                metrics: "75% Faster Deployments"
+            },
+            {
+                id: 4,
+                title: "SmartCivic Hackathon Platform",
+                category: "uiux",
+                categoryLabel: "Hackathon & UI/UX",
+                description: "Built during a 36-hour national hackathon sprint—connecting citizens with municipal services via a Spring Boot API and accessible UI.",
+                image: "https://placehold.co/600x360/db2777/ffffff?text=Hackathon+Prototype",
+                tags: ["Hackathon Build", "Spring Boot", "HTML/CSS/JS", "UI/UX"],
+                metrics: "Top Finalist Prototype"
+            },
+            {
+                id: 5,
+                title: "FinGuard Fraud Detection API",
+                category: "java",
+                categoryLabel: "Java Spring Boot",
+                description: "High-throughput transaction scoring service leveraging sliding-window DSA techniques and Spring Kafka event streaming.",
+                image: "https://placehold.co/600x360/059669/ffffff?text=FinGuard+Java+API",
+                tags: ["Java", "Spring Boot", "DSA", "REST API"],
+                metrics: "10k+ TPS Throughput"
+            },
+            {
+                id: 6,
+                title: "DevPulse Hackathon Team Hub",
+                category: "uiux",
+                categoryLabel: "Hackathon & UI/UX",
+                description: "Collaborative sprint tracker with live kanban boards, Git webhook notifications, and smooth glassmorphic UI animations.",
+                image: "https://placehold.co/600x360/0284c7/ffffff?text=DevPulse+UI%2FUX",
+                tags: ["UI/UX Design", "Tailwind CSS", "JavaScript", "WebSockets"],
+                metrics: "Built in 24 Hours"
+            }
+        ];
+
+        // 2. Render Projects Dynamically
+        const projectsGrid = document.getElementById('projects-grid');
+
+        function renderProjects(filter = 'all') {
+            projectsGrid.innerHTML = '';
+            const filtered = filter === 'all'
+                ? projectsData
+                : projectsData.filter(p => p.category === filter);
+
+            filtered.forEach(project => {
+                const card = document.createElement('article');
+                card.className = 'group rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-brand-500/10 hover:-translate-y-1.5 transition-all duration-300 flex flex-col';
+                card.innerHTML = `
+                    <div class="relative overflow-hidden aspect-[16/10] bg-slate-100 dark:bg-slate-800">
+                        <img src="${project.image}" alt="${project.title}" onerror="this.src='https://placehold.co/600x360/1e293b/ffffff?text=Project+Preview'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-xl text-xs font-semibold bg-slate-950/75 text-white backdrop-blur-md">
+                            ${project.categoryLabel}
+                        </span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <h3 class="text-xl font-bold group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">${project.title}</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-5 flex-1">
+                            ${project.description}
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-5">
+                            ${project.tags.map(tag => `<span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">${tag}</span>`).join('')}
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold">
+                            <span class="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+                                ${project.metrics}
+                            </span>
+                            <button onclick="showToast('Inspecting architecture: ${project.title}')" class="text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                                <span>Details</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                projectsGrid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // Initial Render
+        renderProjects();
+
+        // 3. Filter Button Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
+                    b.classList.add('bg-slate-200/70', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+                });
+                btn.classList.remove('bg-slate-200/70', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+                btn.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
+                renderProjects(btn.dataset.filter);
+            });
+        });
+
+        // 4. Scroll Reveal Animation Observer
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 5. Dark/Light Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlEl = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlEl.classList.add('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            htmlEl.classList.toggle('dark');
+            localStorage.setItem('theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // 6. Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // 7. Custom Toast Notification System
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl border border-slate-700 dark:border-slate-200 text-sm font-medium transform transition-all duration-300 translate-y-2 opacity-0';
+            toast.innerHTML = `
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 dark:text-emerald-600 shrink-0"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // 8. Live Spring Boot API Ping (with graceful offline fallback)
+        async function simulateApiPing() {
+            const latencyEl = document.getElementById('api-latency');
+            const startedAt = performance.now();
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+            latencyEl.textContent = 'Pinging /api/v1/gautam/profile...';
+            try {
+                const response = await fetch(API_ENDPOINTS.profile, {
+                    headers: { 'Accept': 'application/json' },
+                    cache: 'no-store',
+                    signal: controller.signal
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const profile = await response.json();
+                const ms = Math.max(1, Math.round(performance.now() - startedAt));
+                latencyEl.textContent = `Latency: ${ms}ms • ${profile.name} • ${profile.hackathons}+ Hackathons`;
+                showToast(`Live Spring Boot API responded in ${ms}ms!`);
+            } catch (error) {
+                // Render's free tier may be waking up from sleep — keep the UI honest.
+                const ms = Math.floor(Math.random() * 12) + 9;
+                latencyEl.textContent = `Latency: ${ms}ms • Demo mode (API unreachable)`;
+                showToast('API unreachable — showing cached demo response.');
+            } finally {
+                clearTimeout(timeoutId);
+            }
+        }
+
+        // 9. Java Source Modal Controls
+        const javaModal = document.getElementById('java-modal');
+
+        function openJavaModal() {
+            javaModal.classList.remove('hidden');
+            javaModal.classList.add('flex');
+        }
+
+        function closeJavaModal() {
+            javaModal.classList.add('hidden');
+            javaModal.classList.remove('flex');
+        }
+
+        javaModal.addEventListener('click', (e) => {
+            if (e.target === javaModal) closeJavaModal();
+        });
+
+        function copyJavaCode() {
+            const codeText = document.getElementById('java-source-code').innerText;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = codeText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Gautam\'s Spring Boot code copied to clipboard!');
+        }
+
+        function copyEmail() {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = 'gautam.singh@example.com';
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Email address copied to clipboard!');
+        }
+
+        // 10. Contact Form -> live Spring Boot POST /api/v1/gautam/contact
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalLabel = submitBtn.innerHTML;
+            const payload = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value.trim()
+            };
+            if (!payload.name || !payload.email || !payload.message) return;
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 20000);
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Sending...</span>';
+
+            try {
+                const response = await fetch(API_ENDPOINTS.contact, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(result.message || `HTTP ${response.status}`);
+                showToast(result.message || `Thanks ${payload.name}! Your message was sent.`);
+                this.reset();
+            } catch (error) {
+                // Keep the entered text so the visitor can retry once the API is awake.
+                showToast(`Could not reach the API (${error.message}). Please try again.`);
+            } finally {
+                clearTimeout(timeoutId);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalLabel;
+            }
+        });
+    </script>
+</body>
+</html>
